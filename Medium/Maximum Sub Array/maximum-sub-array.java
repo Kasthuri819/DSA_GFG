@@ -50,7 +50,7 @@ class Solution {
                 currentLength = 0;
             }
 
-            if (sum > maxSum || (sum == maxSum && (currentLength > maxLength || (currentLength == maxLength && start < begin)))) {
+           if (sum > maxSum || (sum == maxSum && currentLength > maxLength)) {
                 maxSum = sum;
                 begin = start;
                 end = i;
