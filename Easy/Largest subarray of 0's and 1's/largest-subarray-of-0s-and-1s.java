@@ -33,6 +33,8 @@ class Largest_Subarray
 
 
 
+
+
 class Solution {
 
     // arr[] : the input array containing 0s and 1s
@@ -42,27 +44,25 @@ class Solution {
     // with equal 0s and 1s
     int maxLen(int[] arr, int N)
     {
-        int max=0,sum=0;
-        Map<Integer,Integer> map=new HashMap<>();
-        map.put(0,-1);
+        int sum=0,max=0;
+        
+        Map<Integer,Integer> frequencyMap=new HashMap<>();
+        
         for(int i=0;i<N;i++)
         {
-            if(arr[i]==0)
-            {
-                sum-=1;
-            }
-            else
-            {
-                sum+=1;
-            }
+            sum+=arr[i]==0?-1:1;
             
-            if(map.containsKey(sum))
+            if(sum==0)
+                max=i+1;
+                
+            if(frequencyMap.containsKey(sum))
             {
-                max=Math.max(max,i-map.get(sum));
+                int previousIndex=frequencyMap.get(sum);
+                max=Math.max(max,i-previousIndex);
             }
             else
             {
-                map.put(sum,i);
+                frequencyMap.put(sum,i);
             }
         }
         
