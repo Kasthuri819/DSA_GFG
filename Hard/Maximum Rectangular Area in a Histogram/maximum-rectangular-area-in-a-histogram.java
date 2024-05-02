@@ -30,55 +30,29 @@ class Solution
     //Function to find largest rectangular area possible in a given histogram.
     public static long getMaxArea(long hist[], long n) 
     {
-        long leftSmaller[]=new long[(int)n];
-        long rightSmaller[]=new long[(int)n];
+        int N=(int)n;
+        long max=0;
         
         Stack<Integer> stack=new Stack<>();
         
-        for(int i=0;i<n;i++)
+        for(int i=0;i<=N;i++)
         {
-            while(!stack.isEmpty() && hist[stack.peek()]>=hist[i])
+            while(!stack.isEmpty() && (i==N||hist[stack.peek()]>=hist[i]))
             {
+                long height=hist[stack.peek()];
                 stack.pop();
-            }
-            
-            if(stack.isEmpty())
-            {
-                leftSmaller[i]=0;
-            }
-            else
-            {
-                leftSmaller[i]=stack.peek()+1;
-            }
-            
-            stack.push(i);
-        }
-        
-        stack.clear();
-        
-        for(int i=(int)n-1;i>=0;i--)
-        {
-            while(!stack.isEmpty() && hist[stack.peek()]>=hist[i])
-            {
-                stack.pop();
-            }
-            
-            if(stack.isEmpty())
-            {
-                rightSmaller[i]=n-1;
-            }
-            else
-            {
-                rightSmaller[i]=stack.peek()-1;
+                int width;
+                if(stack.isEmpty())
+                {
+                    width=i;
+                }
+                else
+                {
+                    width=i-stack.peek()-1;
+                }
+                max=Math.max(max,width*height);
             }
             stack.push(i);
-        }
-        
-        long max=0;
-        
-        for(int i=0;i<n;i++)
-        {
-            max=Math.max(max,(rightSmaller[i]-leftSmaller[i]+1)*hist[i]);
         }
         
         return max;
