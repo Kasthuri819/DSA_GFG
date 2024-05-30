@@ -21,28 +21,45 @@ class GFG{
 // } Driver Code Ends
 
 
+
+
 //User function Template for Java
 
 class Solution{
     static int minimumNumberOfDeletions(String S) {
         
-        int n = S.length();
-        // Create a 2D array to store the minimum number of deletions required
-        int[][] dp = new int[n][n];
+       int stringLength=S.length();
+       
+       return stringLength - longestPalindromicSubsequence(S);
+    }
+    
+    private static int longestPalindromicSubsequence(String s)
+    {
+        String reversed=new StringBuilder(s).reverse().toString();
+        return lcs(s,reversed);
+    }
+    
+    private static int lcs(String s1,String s2)
+    {
+        int n=s1.length(),m=s2.length();
         
-        // Fill the dp array
-        for (int l = 2; l <= n; l++) {
-            for (int i = 0; i < n - l + 1; i++) {
-                int j = i + l - 1;
-                if (S.charAt(i) == S.charAt(j))
-                    dp[i][j] = dp[i + 1][j - 1];
+        int dp[][]=new int[n+1][m+1];
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(s1.charAt(i-1)==s2.charAt(j-1))
+                {
+                    dp[i][j]=dp[i-1][j-1]+1;
+                }
                 else
-                    dp[i][j] = Math.min(dp[i][j - 1], dp[i + 1][j]) + 1;
+                {
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
             }
         }
         
-        // Return the minimum number of deletions required to make the whole string palindrome
-        return dp[0][n - 1];
-        
+        return dp[n][m];
     }
 }
