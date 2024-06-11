@@ -38,56 +38,32 @@ class Solution {
         
         boolean visited[]=new boolean[V];
         
-        
         for(int i=0;i<V;i++)
         {
-            if(!visited[i] && checkForCycle(i,adj,visited))
+            if(!visited[i])
             {
-                 return true;
+                if(dfs(i,-1,visited,adj)) return true;
             }
         }
         
         return false;
     }
     
-    private static boolean checkForCycle(int src,ArrayList<ArrayList<Integer>> adj, boolean visited[])
+    private static boolean dfs(int node,int parent,boolean visited[],ArrayList<ArrayList<Integer>> adj)
     {
-        Queue<Node> queue=new LinkedList<>();
-        queue.add(new Node(src,-1));
-        visited[src]=true;
+        visited[node]=true;
         
-        while(!queue.isEmpty())
+        for(int adjacentNode:adj.get(node))
         {
-            int node=queue.peek().first;
-            int parent=queue.peek().second;
-            
-            queue.poll();
-            
-            for(int adjacentNode:adj.get(node))
+            if(!visited[adjacentNode])
             {
-                if(!visited[adjacentNode])
-                {
-                    visited[adjacentNode]=true;
-                    queue.add(new Node(adjacentNode,node));
-                }
-                else if(parent!=adjacentNode)
-                {
-                    return true;
-                }
+                if(dfs(adjacentNode,node,visited,adj)) return true;
+            }
+            else if(adjacentNode!=parent)
+            {
+                return true;
             }
         }
-        
         return false;
-    }
-}
-
-class Node
-{
-    int first,second;
-    
-    Node(int first,int second)
-    {
-        this.first=first;
-        this.second=second;
     }
 }
