@@ -63,39 +63,41 @@ class Solution
     //Function to return list containing vertices in Topological order. 
     static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
     {
-        boolean visited[]=new boolean[V];
-        Stack<Integer> stack=new Stack<>();
+        int indegree[]=new int[V];
         
         for(int i=0;i<V;i++)
         {
-            if(!visited[i])
+            for(int adjacentNode:adj.get(i))
             {
-                dfs(i,stack,visited,adj);
+                indegree[adjacentNode]++;
             }
         }
         
-        int topoSort[]=new int[V],index=0;
+        Queue<Integer> queue=new LinkedList<>();
         
-        while(!stack.isEmpty())
+        for(int i=0;i<V;i++)
         {
-           topoSort[index++]=stack.pop(); 
+            if(indegree[i]==0)
+            {
+                queue.add(i);
+            }
+        }
+        
+        int topoSort[]=new int[V],jump=0;
+        
+        while(!queue.isEmpty())
+        {
+            int node=queue.poll();
+            topoSort[jump++]=node;
+            
+            for(int adjNode:adj.get(node))
+            {
+                indegree[adjNode]--;
+                if(indegree[adjNode]==0)
+                    queue.add(adjNode);
+            }
         }
         
         return topoSort;
-    }
-    
-    private static void dfs(int node,Stack<Integer> stack,boolean[] visited,ArrayList<ArrayList<Integer>> adj)
-    {
-        visited[node]=true;
-        
-        for(int adjacentNode:adj.get(node))
-        {
-            if(!visited[adjacentNode])
-            {
-                dfs(adjacentNode,stack,visited,adj);
-            }
-        }
-        
-        stack.push(node);
     }
 }
