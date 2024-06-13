@@ -35,38 +35,44 @@ class Solution {
     // Function to detect cycle in a directed graph.
     public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
         
-        boolean visited[]=new boolean[V];
-        boolean pathVisited[]=new boolean[V];
+        int indegree[]=new int[V];
         
         for(int i=0;i<V;i++)
         {
-            if(!visited[i])
+            for(int adjacentNode:adj.get(i))
             {
-                if(dfs(i,visited,pathVisited,adj)) return true;
+                indegree[adjacentNode]++;
             }
         }
         
-        return false;
-    }
-    
-    private static boolean dfs(int node,boolean visited[],boolean pathVisited[],ArrayList<ArrayList<Integer>> adj)
-    {
-        visited[node]=true;
-        pathVisited[node]=true;
+        Queue<Integer> queue=new LinkedList<>();
         
-        for(int adjacentNode:adj.get(node))
+        for(int i=0;i<V;i++)
         {
-            if(!visited[adjacentNode])
+            if(indegree[i]==0)
+                queue.add(i);
+        }
+        
+        int count=0;
+        
+        while(!queue.isEmpty())
+        {
+            int node=queue.poll();
+            
+            count++;
+            
+            for(int adjacentNode:adj.get(node))
             {
-                if(dfs(adjacentNode,visited,pathVisited,adj)) return true;
-            }
-            else if(pathVisited[adjacentNode])
-            {
-                return true;
+                indegree[adjacentNode]--;
+                
+                if(indegree[adjacentNode]==0)
+                    queue.add(adjacentNode);
             }
         }
         
-        pathVisited[node]=false;
-        return false;
+        if(count==V) return false;
+        
+        
+        return true;
     }
 }
