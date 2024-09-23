@@ -1,50 +1,48 @@
 //{ Driver Code Starts
-//Initial Template for Java
+// Initial Template for Java
 
-import java.util.*;
+import java.io.*;
 import java.lang.*;
 import java.math.*;
-import java.io.*;
+import java.util.*;
 
-class GFG {
-  public static void main(String[] args) throws IOException {
-    Scanner sc = new Scanner(System.in);
-    int T = sc.nextInt();
-    while (T-- > 0) {
-      int n = sc.nextInt();
-      int m = sc.nextInt();
-      int a[] = new int[n];
-      for(int i=0;i<n;i++){
-        a[i]=sc.nextInt();
-      }
-      int b[] = new int[m];
-      for(int i=0;i<m;i++){
-        b[i]=sc.nextInt();
-      }
-      
-      Solution obj = new Solution();
-      int ans = obj.maxChildren(n, m,a, b);
-      System.out.println(ans);
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine(); // consume the newline
+        for (int tc = 0; tc < t; tc++) {
+            String[] greedStr = sc.nextLine().split(" ");
+            String[] cookieStr = sc.nextLine().split(" ");
+
+            int[] greed = Arrays.stream(greedStr).mapToInt(Integer::parseInt).toArray();
+            int[] cookie =
+                Arrays.stream(cookieStr).mapToInt(Integer::parseInt).toArray();
+
+            Solution obj = new Solution();
+            System.out.println(obj.maxChildren(greed, cookie));
+        }
+        sc.close();
     }
-  }
 }
-
 // } Driver Code Ends
+
+
 
 
 //User function Template for Java
 
 class Solution {
-    static int maxChildren(int N,int M,int greed[], int sz[]) {
+    static int maxChildren(int greed[], int cookies[]) {
     
-        int l=0,r=0;
+        int l=0,r=0,n=greed.length,m=cookies.length;
 		
 		Arrays.sort(greed);
-		Arrays.sort(sz);
+		Arrays.sort(cookies);
 		
-		while(l<M && r<N)
+		while(l<m && r<n)
 		{
-			if(greed[r]<=sz[l])
+			if(cookies[l]>=greed[r])
 			{
 				r++;
 			}
